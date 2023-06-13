@@ -63,7 +63,7 @@ export class PopupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.weatherClient.getWeatherForecast(50.06, 19.94).subscribe((value) => {
+    this.weatherClient.getWeatherForecast(this.weatherClient.CracowLat, this.weatherClient.CracowLon, this.weatherClient.numberOfDays).subscribe((value) => {
       this.root = value;
 
       var date1 = new Date();

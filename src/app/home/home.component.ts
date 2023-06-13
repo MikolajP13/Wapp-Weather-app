@@ -103,7 +103,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.weatherClient.getWeatherForecast(50.06, 19.94).subscribe((value) => {
+    this.weatherClient.getWeatherForecast(this.weatherClient.CracowLat, this.weatherClient.CracowLon, this.weatherClient.numberOfDays).subscribe((value) => {
       this.root = value;
       for (let i = 0; i < 3; i++) {
         const dailyData: ThreeDaysWeather = {
@@ -117,7 +117,7 @@ export class HomeComponent implements OnInit {
       }
     });
 
-    this.cityClient.getCityNameByCordinates(50.06, 19.94).subscribe((value) => {
+    this.cityClient.getCityNameByCordinates(this.weatherClient.CracowLat, this.weatherClient.CracowLon).subscribe((value) => {
       this.cityNameRoot = value;
     });
 

@@ -11,11 +11,14 @@ pogoda godzinowa na wybrany dzień
 
 */
 export class WeatherClientService {
+  CracowLat: number = 50.06;
+  CracowLon: number = 19.94;
+  numberOfDays: number = 3;
 
   constructor(private httpClient: HttpClient) { }
 
-  public getWeatherForecast(latitude: number, longitude: number): Observable<RootWeather>{
-    return this.httpClient.get<RootWeather>(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,rain&daily=temperature_2m_max,temperature_2m_min,rain_sum,windspeed_10m_max&current_weather=true&windspeed_unit=ms&forecast_days=3&timezone=auto`);
+  public getWeatherForecast(latitude: number, longitude: number, days: number): Observable<RootWeather>{
+    return this.httpClient.get<RootWeather>(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,rain&daily=temperature_2m_max,temperature_2m_min,rain_sum,windspeed_10m_max&current_weather=true&windspeed_unit=ms&forecast_days=${days}&timezone=auto`);
   }
 
 }
