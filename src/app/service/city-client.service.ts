@@ -10,8 +10,8 @@ export class CityClientService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public getCityNameByCordinates(): Observable<RootCord>{
-    return this.httpClient.get<RootCord>('https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=50.17&longitude=19.94&localityLanguage=en');
+  public getCityNameByCordinates(latitude: number, longitude: number): Observable<RootCord>{
+    return this.httpClient.get<RootCord>(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
   }
 
   public getCordinatesByCityName(): Observable<RootCities>{

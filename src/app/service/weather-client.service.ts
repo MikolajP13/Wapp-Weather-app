@@ -14,9 +14,8 @@ export class WeatherClientService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public getWeatherForecast(): Observable<RootWeather>{
-    return this.httpClient.get<RootWeather>('https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m,rain&daily=temperature_2m_max,temperature_2m_min,rain_sum,windspeed_10m_max&current_weather=true&windspeed_unit=ms&forecast_days=3&timezone=auto');
-    //https://api.open-meteo.com/v1/forecast?latitude=50.17&longitude=19.94&hourly=temperature_2m
+  public getWeatherForecast(latitude: number, longitude: number): Observable<RootWeather>{
+    return this.httpClient.get<RootWeather>(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,rain&daily=temperature_2m_max,temperature_2m_min,rain_sum,windspeed_10m_max&current_weather=true&windspeed_unit=ms&forecast_days=3&timezone=auto`);
   }
 
 }

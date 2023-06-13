@@ -1,0 +1,15 @@
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+
+.mat-elevation-z8{
+  background: transparent;
+}
+
+.table-p-element{
+  font-size: 2rem;
+  font-family: Caveat, 'Courier New', Courier, monospace;
+}
+
+.hover-row:hover {
+  background-color: #ebe99b!important; /* Kolor tła w trakcie hover */
+  cursor: pointer; /* Zmiana kursora na wskaźnik */
+}

@@ -12,13 +12,16 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
 import { WeatherClientService } from './service/weather-client.service';
+import { PopupComponent } from './popup/popup.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     AboutWappComponent,
-    WeatherComponent
+    WeatherComponent,
+    PopupComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +30,8 @@ import { WeatherClientService } from './service/weather-client.service';
     MaterialModule,
     MatTabsModule,
     NgbModule,  
-    HttpClientModule
+    HttpClientModule,
+    MatDialogModule
   ],
   providers: [WeatherClientService],
   bootstrap: [AppComponent]
