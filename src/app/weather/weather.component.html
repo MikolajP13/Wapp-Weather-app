@@ -1,1 +1,46 @@
-<p>asdsasdasd</p>
+<mat-form-field>
+  <mat-label>City</mat-label>
+  <input matInput (input)="onInputChange($event)">
+</mat-form-field>
+
+<form class="example-form">
+  <mat-form-field class="example-full-width">
+    <mat-label>City</mat-label>
+    <input type="text"
+           placeholder="Search for your city"
+           aria-label="Number"
+           matInput (input)="onInputChange($event)"
+           [formControl]="myControl"
+           [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let city of searchedCities" [value]="city.getLocationDetails().substring(0, 50) + (city.getLocationDetails().length > 50 ? '...' : '')" class="hover-location">
+          <div class="flex-container">
+            <div class="column">
+              <div class="icon-container">
+                <i class="bi bi-geo-alt"></i>
+              </div>
+            </div>
+            <div class="column">
+              <div class="row">
+                <p id="locationName">{{city.getLocationDetails().substring(0, city.getLocationDetails().indexOf(','))}}</p>
+              </div>
+              <div class="row">
+                <p id="locationDetails">{{city.getLocationDetails().substring(city.getLocationDetails().indexOf(',') + 1)}}</p>
+              </div>
+            </div>
+          </div>
+        </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+
+<mat-form-field color="accent">
+  <mat-label>Enter a date range</mat-label>
+  <mat-date-range-input [rangePicker]="picker">
+    <input matStartDate placeholder="Start date">
+    <input matEndDate placeholder="End date">
+  </mat-date-range-input>
+  <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-date-range-picker #picker></mat-date-range-picker>
+</mat-form-field>
