@@ -14,8 +14,8 @@ export class CityClientService {
     return this.httpClient.get<RootCord>(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`);
   }
 
-  public getCordinatesByCityName(): Observable<RootCities>{
-    return this.httpClient.get<RootCities>('https://geocode.maps.co/search?q=Cracow');
+  public getCordinatesByCityName(cityName: string): Observable<RootCities>{
+    return this.httpClient.get<RootCities>(`https://geocode.maps.co/search?q=${cityName}`);
   }
 }
 

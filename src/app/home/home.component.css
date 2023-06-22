@@ -10,6 +10,6 @@
 }
 
 .hover-row:hover {
-  background-color: #ebe99b!important; /* Kolor tła w trakcie hover */
-  cursor: pointer; /* Zmiana kursora na wskaźnik */
+  background-color: #ebe99b!important;
+  cursor: pointer;
 }

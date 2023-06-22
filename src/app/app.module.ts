@@ -14,6 +14,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { WeatherClientService } from './service/weather-client.service';
 import { PopupComponent } from './popup/popup.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -31,7 +38,16 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatTabsModule,
     NgbModule,  
     HttpClientModule,
-    MatDialogModule
+    MatDialogModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule, 
+    MatSelectModule,
+    FormsModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule
+
   ],
   providers: [WeatherClientService],
   bootstrap: [AppComponent]
