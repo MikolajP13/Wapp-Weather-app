@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { WeatherClientService } from '../service/weather-client.service';
 import { CityClientService, RootCities, RootCity, RootCord } from '../service/city-client.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
+import { DateRange, MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { empty } from 'rxjs';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-weather',
@@ -32,10 +35,14 @@ export class WeatherComponent implements OnInit{
       informative: []
     }
   };
+
   cordsCityMap: Map<string, string> = new Map();
-
-
-  searchedCities: City[] = []; 
+  searchedCities: City[] = [];
+  selectedLocationCordinates: string = '';
+  selectedDateRange = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
 
   constructor(private weatherClient: WeatherClientService, private cityClient: CityClientService){
 
@@ -50,35 +57,64 @@ export class WeatherComponent implements OnInit{
   onInputChange(event: any) {
     this.cordsCityMap = new Map();
     const enteredValue = event.target.value;
-    console.log('Wprowadzono: ', enteredValue);
     this.cityClient.getCordinatesByCityName(enteredValue).subscribe(
       res => {
         this.cityRoot = res;
+        const uniqueCordsSet = new Set();
         this.cityRoot.forEach(element => {
-          this.cordsCityMap.set(`${parseFloat(element.lat).toFixed(2).toString()},${parseFloat(element.lon).toFixed(2).toString()}`, element.display_name);
-          console.log(this.cordsCityMap);
-          this.searchedCities.push(new City(`${parseFloat(element.lat).toFixed(2).toString()},${parseFloat(element.lon).toFixed(2).toString()}`, element.display_name));
-          // this.cityClient.getCityNameByCordinates(parseFloat(element.lat), parseFloat(element.lon)).subscribe(
-          //   res => {
-          //     this.cityByCord = res;
-          //     console.log(this.cityByCord.city + ', ' + this.cityByCord.countryName);
-          //   }
-          // );
+          const coords = `${parseFloat(element.lat).toFixed(2)},${parseFloat(element.lon).toFixed(2)}`;
+          if (!uniqueCordsSet.has(coords)) {
+            uniqueCordsSet.add(coords);
+            this.cordsCityMap.set(coords, element.display_name);
+            this.searchedCities.push(new City(coords, element.display_name));
+          }
         });
       }
     )
     this.searchedCities = [];
   }
 
-  onAction(){
-    console.log("wszedłem w input!");
+  show(){
+    const cords = this.selectedLocationCordinates.split(',');
+
+    const startDate = this.formatDate(this.selectedDateRange.value.start);
+    const endDate = this.formatDate(this.selectedDateRange.value.end);
+    
+    //condition check!
+
+    this.weatherClient.getWeatherForecastBetweenDates(parseFloat(cords[0]), parseFloat(cords[1]), startDate, endDate).subscribe(
+      result => {
+        console.log(result.daily.temperature_2m_max);
+      }
+    )
+  }
+
+
+  saveCordinates(event: MatAutocompleteSelectedEvent) {
+    const city: City = event.option.value;
+    this.selectedLocationCordinates = city.getCordinates();
+  }
+
+  displayFn(city: City): string {
+    return city ? city.getLocationDetails().substring(0, 50) + (city.getLocationDetails().length > 50 ? '...' : '') : '';
+  }
+
+  formatDate(date: Date | null | undefined): string{
+    if (date) {
+    const year = date?.getFullYear();
+    const month = (date?.getMonth() + 1).toString().padStart(2, '0');
+    const day = (date?.getDate()).toString().padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+    }
+
+    return '';
   }
 
 }
 
 class City {
   constructor(private cordinates: string, private locationDetails: string){
-
   }
 
   getCordinates(): string {

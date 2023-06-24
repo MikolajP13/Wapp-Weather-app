@@ -1,19 +1,15 @@
-<mat-form-field>
-  <mat-label>City</mat-label>
-  <input matInput (input)="onInputChange($event)">
-</mat-form-field>
-
+<form>
 <form class="example-form">
   <mat-form-field class="example-full-width">
-    <mat-label>City</mat-label>
+    <mat-label>Location</mat-label>
     <input type="text"
-           placeholder="Search for your city"
+           placeholder="Search for your location"
            aria-label="Number"
            matInput (input)="onInputChange($event)"
            [formControl]="myControl"
            [matAutocomplete]="auto">
-    <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let city of searchedCities" [value]="city.getLocationDetails().substring(0, 50) + (city.getLocationDetails().length > 50 ? '...' : '')" class="hover-location">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="saveCordinates($event)">
+      <mat-option *ngFor="let city of searchedCities" [value]="city" class="hover-location">
           <div class="flex-container">
             <div class="column">
               <div class="icon-container">
@@ -25,22 +21,26 @@
                 <p id="locationName">{{city.getLocationDetails().substring(0, city.getLocationDetails().indexOf(','))}}</p>
               </div>
               <div class="row">
-                <p id="locationDetails">{{city.getLocationDetails().substring(city.getLocationDetails().indexOf(',') + 1)}}</p>
+                <p id="locationDetails">{{city.getLocationDetails().substring(city.getLocationDetails().indexOf(',') + 1)}} [{{city.getCordinates()}}]</p>
               </div>
             </div>
           </div>
         </mat-option>
     </mat-autocomplete>
   </mat-form-field>
-</form>
 
-<mat-form-field color="accent">
+<mat-form-field>
   <mat-label>Enter a date range</mat-label>
-  <mat-date-range-input [rangePicker]="picker">
-    <input matStartDate placeholder="Start date">
-    <input matEndDate placeholder="End date">
+  <mat-date-range-input [formGroup]="selectedDateRange" [rangePicker]="picker">
+    <input matStartDate formControlName="start" placeholder="Start date">
+    <input matEndDate formControlName="end" placeholder="End date">
   </mat-date-range-input>
   <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
   <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
   <mat-date-range-picker #picker></mat-date-range-picker>
+  <mat-error *ngIf="selectedDateRange.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+  <mat-error *ngIf="selectedDateRange.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
 </mat-form-field>
+
+<button mat-raised-button (click)="show()">Check weather!</button>
+</form>
