@@ -51,3 +51,24 @@
 #locationDetails{
   font-size: 0.8rem;
 }
+
+.container {
+  display: flex;
+  gap: 10%;
+}
+
+.left-container {
+  flex: 1;
+}
+
+.right-container {
+  flex: 1;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.half-width {
+  width: 50%;
+}

@@ -1,4 +1,3 @@
-<form>
 <form class="example-form">
   <mat-form-field class="example-full-width">
     <mat-label>Location</mat-label>
@@ -31,16 +30,106 @@
 
 <mat-form-field>
   <mat-label>Enter a date range</mat-label>
-  <mat-date-range-input [formGroup]="selectedDateRange" [rangePicker]="picker">
-    <input matStartDate formControlName="start" placeholder="Start date">
-    <input matEndDate formControlName="end" placeholder="End date">
+  <mat-date-range-input [formGroup]="selectedDateRange" [min]="today" [max]="maxDate" [rangePicker]="picker">
+    <input matStartDate formControlName="start" placeholder="Start date" matInput (dateChange)="validateForm()">
+    <input matEndDate formControlName="end" placeholder="End date" matInput (dateChange)="validateForm()">
   </mat-date-range-input>
   <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
   <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-date-range-picker #picker></mat-date-range-picker>
+  <mat-date-range-picker #picker (dateChange)="validateForm()"></mat-date-range-picker>
   <mat-error *ngIf="selectedDateRange.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
   <mat-error *ngIf="selectedDateRange.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+  <mat-error *ngIf="!isValidStartDate()"> Start date not valid </mat-error>
+  <mat-error *ngIf="!isValidDateRange()"> Max days not valid </mat-error>
 </mat-form-field>
 
-<button mat-raised-button (click)="show()">Check weather!</button>
+<button mat-raised-button (click)="resetForm(); showWeather = false">Reset</button>
+<button mat-raised-button [disabled]="!isLocationAndDateSelected()" (click)="show(); showWeather = true">Check weather!</button>
 </form>
+
+<div class="container" *ngIf="table.length > 0 && showWeather">
+  <div class="left-container" [ngClass]="{'full-width': recordCount <= 7, 'half-width': recordCount > 7 && recordCount <= 14}">
+    <table mat-table [dataSource]="table.slice(0, 7)" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef> Date </th>
+    <td mat-cell *matCellDef="let element"> 
+      <p class="table-p-element">{{element.time}}</p>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="weatherCode">
+    <th mat-header-cell *matHeaderCellDef>  </th>
+    <td mat-cell *matCellDef="let element"> {{element.weathercode}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="temperature">
+    <th mat-header-cell *matHeaderCellDef> Maks/min. temp. </th>
+    <td mat-cell *matCellDef="let element"> 
+      <p class="table-p-element">
+        {{element.temperature_2m_max}} ° / {{element.temperature_2m_min}} °
+      </p>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="rainfall">
+    <th mat-header-cell *matHeaderCellDef> Rainfall </th>
+    <td mat-cell *matCellDef="let element"> {{element.rain_sum}} mm </td>
+  </ng-container>
+
+  <ng-container matColumnDef="windspeed">
+    <th mat-header-cell *matHeaderCellDef> Wind speed </th>
+    <td mat-cell *matCellDef="let element"> 
+      <p>
+        {{element.windspeed_10m_max}} m/s
+      </p>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+</div>
+<div class="right-container" *ngIf="recordCount > 7 && recordCount <= 14">
+  <table mat-table [dataSource]="table.slice(7, 14)" class="mat-elevation-z8" [ngClass]="{'half-width': recordCount > 7 && recordCount <= 14}">
+  
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let element"> 
+          <p class="table-p-element">{{element.time}}</p>
+        </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="weatherCode">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element"> {{element.weathercode}} </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="temperature">
+        <th mat-header-cell *matHeaderCellDef> Maks/min. temp. </th>
+        <td mat-cell *matCellDef="let element"> 
+          <p class="table-p-element">
+            {{element.temperature_2m_max}} ° / {{element.temperature_2m_min}} °
+          </p>
+        </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="rainfall">
+        <th mat-header-cell *matHeaderCellDef> Rainfall </th>
+        <td mat-cell *matCellDef="let element"> {{element.rain_sum}} mm </td>
+      </ng-container>
+    
+      <ng-container matColumnDef="windspeed">
+        <th mat-header-cell *matHeaderCellDef> Wind speed </th>
+        <td mat-cell *matCellDef="let element"> 
+          <p>
+            {{element.windspeed_10m_max}} m/s
+          </p>
+        </td>
+      </ng-container>
+    
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    </div>
+  </div>
