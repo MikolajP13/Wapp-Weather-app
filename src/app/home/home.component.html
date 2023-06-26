@@ -1,34 +1,40 @@
-
-<h1>Weather forecast</h1>
-<h2>{{cityNameRoot.city}}, {{cityNameRoot.countryName}}</h2>
+<div class="weather-container">
+<h1 class="text-medium">Weather forecast</h1>
+<h2 class="text-medium">{{cityNameRoot.city}}, {{cityNameRoot.countryName}}</h2>
 
 <table mat-table [dataSource]="table" class="mat-elevation-z8" *ngIf="table.length > 0">
 
   <ng-container matColumnDef="date">
-    <th mat-header-cell *matHeaderCellDef> Date </th>
+    <th mat-header-cell *matHeaderCellDef><i class="bi bi-calendar"></i> Date </th>
     <td mat-cell *matCellDef="let element"> 
-      <p class="table-p-element">{{element.time}}</p>
+      <p class="table-p-element text-center text-medium">{{element.time}}</p>
     </td>
   </ng-container>
 
   <ng-container matColumnDef="temperature">
-    <th mat-header-cell *matHeaderCellDef> Maks/min. temp. </th>
+    <th mat-header-cell *matHeaderCellDef><i class="bi bi-thermometer-sun"></i> Max/min temp. </th>
     <td mat-cell *matCellDef="let element"> 
-      <p class="table-p-element">
-        {{element.temperature_2m_max}} ° / {{element.temperature_2m_min}} °
+      <p class="table-p-element text-center text-medium">
+        <span class="text-red">{{element.temperature_2m_max}} °</span>
+        <span> / </span>
+        <span class="text-red">{{element.temperature_2m_min}} °</span>
       </p>
     </td>
   </ng-container>
 
   <ng-container matColumnDef="rainfall">
-    <th mat-header-cell *matHeaderCellDef> Rainfall </th>
-    <td mat-cell *matCellDef="let element"> {{element.rain_sum}} mm </td>
+    <th mat-header-cell *matHeaderCellDef><i class="bi bi-cloud-rain"></i> Rainfall </th>
+    <td mat-cell *matCellDef="let element"> 
+      <p class="table-p-element text-center text-medium text-blue">
+        {{element.rain_sum}} mm
+      </p> 
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="windspeed">
-    <th mat-header-cell *matHeaderCellDef> Wind speed </th>
+    <th mat-header-cell *matHeaderCellDef><i class="bi bi-wind"></i> Wind speed </th>
     <td mat-cell *matCellDef="let element"> 
-      <p>
+      <p class="table-p-element text-center text-medium">
         {{element.windspeed_10m_max}} m/s
       </p>
     </td>
@@ -37,11 +43,13 @@
   <ng-container matColumnDef="info">
     <th mat-header-cell *matHeaderCellDef></th>
     <td mat-cell *matCellDef="let element"> 
+      <p class="table-p-element text-center text-small">
       See time for time <i class="bi bi-chevron-right"></i>
+      </p>
     </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover-row" (click)="openPopup(row)"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="bg-yellow" (click)="openPopup(row)"></tr>
 </table>
-
+</div>

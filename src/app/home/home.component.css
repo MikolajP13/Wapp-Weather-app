@@ -1,15 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
-.mat-elevation-z8{
-  background: transparent;
-}
-
-.table-p-element{
-  font-size: 2rem;
+.weather-container, td, th, .table-p-element, h1, h2 {
   font-family: Caveat, 'Courier New', Courier, monospace;
 }
 
-.hover-row:hover {
+.text-center {
+  text-align: center;
+}
+
+.text-red {
+  color: red;
+}
+
+.text-blue {
+  color: blue;
+}
+
+.text-medium {
+  font-size: 1.6rem;
+}
+
+.text-small {
+  font-size: 1.2rem;
+}
+
+.text-center {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.bg-yellow:hover {
   background-color: #ebe99b!important;
   cursor: pointer;
+}
+
+
+td, th {
+  font-size: 1.4rem;
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+
+.weather-container{
+  width: 95%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.weather-container h1, .weather-container h2 {
+  margin: 5px 0;
+}
+
+.weather-container table {
+  margin-top: 20px;
+}
+
+.mat-elevation-z8{
+  background: transparent;
 }
