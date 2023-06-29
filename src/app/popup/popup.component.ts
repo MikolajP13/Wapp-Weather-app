@@ -1,15 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import {
-  RootWeather,
-  WeatherClientService,
-} from '../service/weather-client.service';
+import { RootWeather, WeatherClientService } from '../service/weather-client.service';
 
 @Component({
   selector: 'app-popup',
   templateUrl: './popup.component.html',
   styleUrls: ['./popup.component.css'],
 })
+
 export class PopupComponent implements OnInit {
   table: DetailWeather[] = [];
 

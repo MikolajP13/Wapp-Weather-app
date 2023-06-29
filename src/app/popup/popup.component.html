@@ -1,31 +1,44 @@
-<h2>{{data.time}}</h2>
-
-<div class="card-body">
-<table mat-table [dataSource]="table" class="mat-elevation-z8" *ngIf="table.length > 0">
-
-  <ng-container matColumnDef="time">
-    <th mat-header-cell *matHeaderCellDef> Time </th>
-    <td mat-cell *matCellDef="let element"> 
-      {{element.time}}
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="temperature">
-    <th mat-header-cell *matHeaderCellDef> Temp. </th>
-    <td mat-cell *matCellDef="let element"> 
-        {{element.temperature_2m}} °
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="rainfall">
-    <th mat-header-cell *matHeaderCellDef> Rainfall </th>
-    <td mat-cell *matCellDef="let element"> 
-      {{element.rain}} mm 
-    </td>
-  </ng-container>
-
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
+<div class="popup-window">
+  <div class="dialog-header">
+    <div class="date-column">
+          <h2 class="date-header text-medium">{{data.time}}</h2>
+    </div>
+    <div class="close-column">
+      <mat-dialog-actions align="end">
+      <button mat-icon-button mat-dialog-close class="close-button">
+        <i class="bi bi-x-square"></i>
+      </button>
+    </mat-dialog-actions>
+    </div>
+  </div>
+  <div class="card-body">
+  <table mat-table [dataSource]="table" class="mat-elevation-z8" *ngIf="table.length > 0">
+    <ng-container matColumnDef="time">
+      <th mat-header-cell *matHeaderCellDef><i class="bi bi-clock"></i> Time </th>
+      <td mat-cell *matCellDef="let element"> 
+        <p class="text-center text-medium">
+          {{element.time}}
+        </p>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="temperature">
+      <th mat-header-cell *matHeaderCellDef><i class="bi bi-thermometer-sun"></i> Temp. </th>
+      <td mat-cell *matCellDef="let element">
+        <p class="text-center text-medium text-red">
+          {{element.temperature_2m}} °
+        </p>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="rainfall">
+      <th mat-header-cell *matHeaderCellDef><i class="bi bi-cloud-rain"></i> Rainfall </th>
+      <td mat-cell *matCellDef="let element">
+        <p class="text-center text-medium text-blue">
+          {{element.rain}} mm
+        </p>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  </div>
 </div>
