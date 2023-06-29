@@ -1,12 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
-
 body{
   background-image: url("https://img.freepik.com/free-photo/fantastic-blue-sky_1203-1929.jpg?w=740&t=st=1686405261~exp=1686405861~hmac=6f2c04afadb2f7c5ca78802dcd2d5c80daddf3e5f21f550a4d8306661cc35dd9");
   background-size: cover;
-  height: calc(90vh - 50px);
+  max-height: 100vh;
   background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
 }
 
 .navbar {
@@ -19,10 +21,11 @@ body{
   color: white;
 }
 
+.content {
+  flex: 1;
+}
+
 footer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
   width: 100%;
   background-color: #0cb7e2;
   padding: 5px;

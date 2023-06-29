@@ -25,16 +25,10 @@
   font-size: 1.2rem;
 }
 
-.text-center {
-  text-align: center !important;
-  vertical-align: middle !important;
-}
-
 .bg-yellow:hover {
   background-color: #ebe99b!important;
   cursor: pointer;
 }
-
 
 td, th {
   font-size: 1.4rem;

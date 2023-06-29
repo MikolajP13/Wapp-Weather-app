@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
-
 <mat-toolbar class="navbar">
   <i class="bi bi-cloud-sun-fill"></i>
   <button mat-button class="hover-class" routerLink="/">
@@ -21,10 +19,10 @@
 </mat-toolbar>
 
 <body>
-  <router-outlet></router-outlet>
-</body>
-
-<footer>
+  <div class="content">
+      <router-outlet></router-outlet>
+  </div>
+  <footer>
     <div>
       <div>
         <p class="p-footer">Follow Me on</p>
@@ -36,3 +34,4 @@
       <p class="p-footer">© 2023 by MPCode</p>
     </div>
 </footer>
+</body>
