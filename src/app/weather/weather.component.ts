@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { RootWeatherBetweenDates, WeatherClientService, Daily } from '../service/weather-client.service';
-import { CityClientService, RootCities, RootCity, RootCord } from '../service/city-client.service';
+import { RootWeatherBetweenDates, WeatherClientService } from '../service/weather-client.service';
+import { CityClientService, RootCities, RootCord } from '../service/city-client.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DateRange, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 export interface WeatherBetweenDates {
@@ -94,13 +93,18 @@ export class WeatherComponent implements OnInit{
   table: WeatherBetweenDates[] = [];
 
   ngOnInit(): void {
-    this.maxDate = new Date(this.today.getTime() + 14 * 24 * 60 * 60 * 1000);
+    this.maxDate = new Date(this.today.getTime() + 13 * 24 * 60 * 60 * 1000);
     this.today.setHours(0, 0, 0, 0);
   }
 
   onInputChange(event: any) {
     this.cordsCityMap = new Map();
     const enteredValue = event.target.value;
+    if(enteredValue === '')
+      this.dateFlag = false;
+    else
+      this.dateFlag = true;
+    
     this.cityClient.getCordinatesByCityName(enteredValue).subscribe(
       res => {
         this.cityRoot = res;
@@ -125,6 +129,7 @@ export class WeatherComponent implements OnInit{
     const numOfDaysBetweenDates = this.getDayDiff(startDate, endDate) + 1;
     const startDateFormatted = this.formatDate(startDate);
     const endDateFormatted = this.formatDate(endDate);
+    this.table = [];
 
     this.weatherClient.getWeatherForecastBetweenDates(parseFloat(cords[0]), parseFloat(cords[1]), startDateFormatted, endDateFormatted).subscribe(
       result => {
@@ -161,7 +166,6 @@ export class WeatherComponent implements OnInit{
     this.searchedCities = [];
     this.table = [];
     this.selectedLocationCordinates = '';
-    this.maxDate = new Date();
     this.dateFlag = false;
   }
 

@@ -1,13 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');
 @import "~bootstrap-icons/font/bootstrap-icons.css";
 
+td, th {
+  font-family: Caveat, 'Courier New', Courier, monospace;
+}
+
+.form-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .example-form {
+  margin-top: 15px;
   min-width: 150px;
   max-width: 500px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .example-full-width {
   width: 100%;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
 }
 
 .hover-location:hover {
@@ -52,16 +76,18 @@
   font-size: 0.8rem;
 }
 
-.container {
+.table-container {
   display: flex;
-  gap: 10%;
+  gap: 1%;
 }
 
 .left-container {
+  margin: 2% 2% 4% 2%;
   flex: 1;
 }
 
 .right-container {
+  margin: 2% 2% 4% 0;
   flex: 1;
 }
 
