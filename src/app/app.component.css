@@ -1,24 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');
-@import "~bootstrap-icons/font/bootstrap-icons.css";
-
-body{
+body {
   background-image: url("https://img.freepik.com/free-photo/fantastic-blue-sky_1203-1929.jpg?w=740&t=st=1686405261~exp=1686405861~hmac=6f2c04afadb2f7c5ca78802dcd2d5c80daddf3e5f21f550a4d8306661cc35dd9");
   background-size: cover;
-  max-height: 100vh;
   background-repeat: no-repeat;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  margin: 0;
+  position: fixed;
 }
 
 .navbar {
-  background-color: #0cb7e2;
+  background-color: var(--main-bg-color);
 }
 
-.timer{
+.timer {
   font-size: 1.5rem;
-  font-family: Caveat, 'Courier New', Courier, monospace;
-  color: white;
+  color: var(--white-text);
 }
 
 .content {
@@ -27,30 +25,38 @@ body{
 
 footer {
   width: 100%;
-  background-color: #0cb7e2;
-  padding: 5px;
+  background-color: var(--main-bg-color);
   text-align: center;
+  margin-top: 200px;
 }
 
-.p-footer{
-  font-family: Caveat, 'Courier New', Courier, monospace;
+.bi {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.social-links-container {
+  padding-top: 8px;
+}
+
+.p-footer {
   font-size: 1.3rem;
-  color: white;
+  color: var(--white-text);
 }
 
-.navbar > i{
-  color: white;
+.navbar > i {
+  color: var(--white-text);
 }
 
-a:hover{
-  color: white;
+.social-link:hover {
+  color: var(--white-text);
 }
 
-.hover-class{
+.button-link {
   font-size: 1.5rem;
-  font-family: Caveat, 'Courier New', Courier, monospace;
 }
 
-.hover-class:hover {
-  color: white;
+.button-link:hover {
+  color: var(--white-text);
 }
