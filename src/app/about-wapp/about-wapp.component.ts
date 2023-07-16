@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './about-wapp.component.html',
   styleUrls: ['./about-wapp.component.css'],
 })
-export class AboutWappComponent {
-
-}
+export class AboutWappComponent {}

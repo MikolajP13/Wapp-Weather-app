@@ -5,10 +5,11 @@
 :root{
   --main-bg-color: #0cb7e2;
   --white-text: white;
+  --caveat-font: Caveat, 'Courier New', Courier, monospace;
 }
 
 *{
-  font-family: Caveat, 'Courier New', Courier, monospace;
+  
 }
 
 html, body { 
@@ -18,4 +19,3 @@ html, body {
 body { 
   margin: 0; 
 }
-
