@@ -12,6 +12,7 @@ body {
 
 .navbar {
   background-color: var(--main-bg-color);
+  min-height: 64px;
 }
 
 .timer {
