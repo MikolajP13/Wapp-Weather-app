@@ -8,14 +8,18 @@
   --caveat-font: Caveat, 'Courier New', Courier, monospace;
 }
 
-*{
-  
-}
-
 html, body { 
   height: 100%;
 }
 
 body { 
   margin: 0; 
+}
+
+.text-red {
+  color: red;
+}
+
+.text-blue {
+  color: blue;
 }

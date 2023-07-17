@@ -1,17 +1,25 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { RootWeather, WeatherClientService } from '../service/weather-client.service';
+import {
+  RootWeather,
+  WeatherClientService,
+} from '../service/weather-client.service';
+
+export interface DetailWeather {
+  time: string[];
+  temperature_2m: string[];
+  rain: string[];
+}
 
 @Component({
   selector: 'app-popup',
   templateUrl: './popup.component.html',
   styleUrls: ['./popup.component.css'],
 })
-
 export class PopupComponent implements OnInit {
-  table: DetailWeather[] = [];
+  detailWeatherTable: DetailWeather[] = [];
 
-  root: RootWeather = {
+  rootWeather: RootWeather = {
     latitude: 0,
     longitude: 0,
     generationtime_ms: 0,
@@ -61,37 +69,40 @@ export class PopupComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.weatherClient.getWeatherForecast(this.weatherClient.CracowLat, this.weatherClient.CracowLon, this.weatherClient.numberOfDays).subscribe((value) => {
-      this.root = value;
+    this.weatherClient
+      .getWeatherForecast(
+        this.weatherClient.CracowLatitude,
+        this.weatherClient.CracowLongitude,
+        this.weatherClient.numberOfDays
+      )
+      .subscribe((value) => {
+        this.rootWeather = value;
 
-      var date1 = new Date();
-      var date2 = new Date(this.data.time);
+        var currentDate = new Date();
+        var targetDate = new Date(this.data.time);
 
-      if (date1.getDate() === date2.getDate()) {
-        this.addDetailDailyData(value, 0, 24);
-      } else if (date1.getDate() + 1 === date2.getDate()) {
-        this.addDetailDailyData(value, 24, 48);
-      } else {
-        this.addDetailDailyData(value, 48, 72);
-      }
-    });
+        // compare two dates and call appropriate function based on the time difference
+        // depending on the time difference addDetailDailyData function is invoked with different time ranges (0-24 hours, 24-48 hours, or 48-72 hours)
+        // this allows to display specific daily data based on the time elapsed between the current date and the target date.
+        if (currentDate .getDate() === targetDate.getDate()) {
+          this.addDetailDailyData(value, 0, 24);
+        } else if (currentDate .getDate() + 1 === targetDate.getDate()) {
+          this.addDetailDailyData(value, 24, 48);
+        } else {
+          this.addDetailDailyData(value, 48, 72);
+        }
+      });
   }
 
   addDetailDailyData(value: any, startIndex: number, endIndex: number) {
     for (let i = startIndex; i < endIndex; i++) {
-      const hour = value.hourly.time[i].substring(11,13);
+      const hour = value.hourly.time[i].substring(11, 13);
       const detailDailyData: DetailWeather = {
         time: [hour],
         temperature_2m: [value.hourly.temperature_2m[i].toFixed(0)],
         rain: [value.hourly.rain[i].toFixed(2)],
       };
-      this.table.push(detailDailyData);
+      this.detailWeatherTable.push(detailDailyData);
     }
   }
-}
-
-export interface DetailWeather {
-  time: string[];
-  temperature_2m: string[];
-  rain: string[];
 }

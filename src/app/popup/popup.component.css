@@ -1,24 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap');
-@import "~bootstrap-icons/font/bootstrap-icons.css";
-
 td, th, h2 {
-  font-family: Caveat, 'Courier New', Courier, monospace;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.text-red {
-  color: red;
-}
-
-.text-blue {
-  color: blue;
-}
-
-.text-medium {
-  font-size: 1.6rem;
+  font-family: var(--caveat-font);
 }
 
 td, th {
@@ -52,7 +33,7 @@ td, th {
 }
 
 .close-button:hover{
-  background-color: #0cb7e2;
+  background-color: var(--main-bg-color);
 }
 
 .card-body {
@@ -87,4 +68,16 @@ td, th {
 
 ::-webkit-scrollbar-thumb-horizontal:hover {
   background-color: #555;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-medium {
+  font-size: 1.6rem;
+}
+
+.text-small {
+  font-size: 1.2rem;
 }

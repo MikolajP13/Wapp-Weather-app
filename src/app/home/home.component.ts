@@ -3,13 +3,9 @@ import {
   RootWeather,
   WeatherClientService,
 } from '../service/weather-client.service';
-import {
-  RootCord,
-  CityClientService
-} from '../service/city-client.service';
+import { RootCord, CityClientService } from '../service/city-client.service';
 import { MatDialog } from '@angular/material/dialog';
 import { PopupComponent } from '../popup/popup.component';
-
 
 export interface ThreeDaysWeather {
   time: string[];
@@ -24,12 +20,16 @@ export interface ThreeDaysWeather {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-
 export class HomeComponent implements OnInit {
+  displayedColumns: string[] = [
+    'date',
+    'temperature',
+    'rainfall',
+    'windspeed',
+    'info',
+  ];
 
-  displayedColumns: string[] = ['date', 'temperature', 'rainfall', 'windspeed', 'info'];
-
-  root: RootWeather = {
+  rootWeather: RootWeather = {
     latitude: 0,
     longitude: 0,
     generationtime_ms: 0,
@@ -71,7 +71,7 @@ export class HomeComponent implements OnInit {
     },
   };
 
-  cityNameRoot: RootCord= {
+  cityRootCord: RootCord = {
     latitude: 0,
     longitude: 0,
     continent: '',
@@ -89,11 +89,11 @@ export class HomeComponent implements OnInit {
     localityInfo: {
       LikelyLand: false,
       administrative: [],
-      informative: []
-    }
-  }
+      informative: [],
+    },
+  };
 
-  table: ThreeDaysWeather[] = [];
+  threeDaysWeatherTable: ThreeDaysWeather[] = [];
 
   constructor(
     private weatherClient: WeatherClientService,
@@ -102,31 +102,39 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.weatherClient
+      .getWeatherForecast(
+        this.weatherClient.CracowLatitude,
+        this.weatherClient.CracowLongitude,
+        this.weatherClient.numberOfDays
+      )
+      .subscribe((value) => {
+        this.rootWeather = value;
+        for (let i = 0; i < 3; i++) {
+          const dailyData: ThreeDaysWeather = {
+            time: [value.daily.time[i]],
+            temperature_2m_min: [value.daily.temperature_2m_min[i]],
+            temperature_2m_max: [value.daily.temperature_2m_max[i]],
+            rain_sum: [value.daily.rain_sum[i].toFixed(2)],
+            windspeed_10m_max: [value.daily.windspeed_10m_max[i].toFixed(2)],
+          };
+          this.threeDaysWeatherTable.push(dailyData);
+        }
+      });
 
-    this.weatherClient.getWeatherForecast(this.weatherClient.CracowLat, this.weatherClient.CracowLon, this.weatherClient.numberOfDays).subscribe((value) => {
-      this.root = value;
-      for (let i = 0; i < 3; i++) {
-        const dailyData: ThreeDaysWeather = {
-          time: [value.daily.time[i]],
-          temperature_2m_min: [value.daily.temperature_2m_min[i]],
-          temperature_2m_max: [value.daily.temperature_2m_max[i]],
-          rain_sum: [value.daily.rain_sum[i].toFixed(2)],
-          windspeed_10m_max: [value.daily.windspeed_10m_max[i].toFixed(2)],
-        };
-        this.table.push(dailyData);
-      }
-    });
-
-    this.cityClient.getCityNameByCordinates(this.weatherClient.CracowLat, this.weatherClient.CracowLon).subscribe((value) => {
-      this.cityNameRoot = value;
-    });
-
+    this.cityClient
+      .getCityNameByCordinates(
+        this.weatherClient.CracowLatitude,
+        this.weatherClient.CracowLongitude
+      )
+      .subscribe((value) => {
+        this.cityRootCord = value;
+      });
   }
 
-  openPopup(row: ThreeDaysWeather): void {
+  openPopupWithHourlyWeather(row: ThreeDaysWeather): void {
     this.dialog.open(PopupComponent, {
-      data: row
+      data: row,
     });
   }
-
 }

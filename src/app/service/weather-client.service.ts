@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 })
 
 export class WeatherClientService {
-  CracowLat: number = 50.06;
-  CracowLon: number = 19.94;
+  CracowLatitude: number = 50.06;
+  CracowLongitude: number = 19.94;
   numberOfDays: number = 3;
 
   constructor(private httpClient: HttpClient) { }
