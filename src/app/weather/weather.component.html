@@ -2,26 +2,24 @@
   <form class="example-form">
     <mat-form-field class="example-full-width">
       <mat-label>Location</mat-label>
-      <input type="text"
-            placeholder="Search for your location"
-            aria-label="Number"
-            matInput (input)="onInputChange($event)"
-            [formControl]="myControl"
-            [matAutocomplete]="auto">
+      <input type="text" placeholder="Search for your location" aria-label="Number" matInput
+        (input)="onInputChange($event)" [formControl]="myControl" [matAutocomplete]="auto">
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="saveCordinates($event)">
         <mat-option *ngFor="let city of searchedCities" [value]="city" class="hover-location">
-            <div class="flex-container">
-              <div class="column">
-                <div class="icon-container">
-                  <i class="bi bi-geo-alt"></i>
-                </div>
+          <div class="flex-container">
+            <div class="column">
+              <div class="icon-container">
+                <i class="bi bi-geo-alt"></i>
               </div>
-              <div class="column">
+            </div>
+            <div class="column">
               <div class="row">
-                <p id="locationName">{{city.getLocationDetails().substring(0, city.getLocationDetails().indexOf(','))}}</p>
+                <p id="locationName">{{city.getLocationDetails().substring(0, city.getLocationDetails().indexOf(','))}}
+                </p>
               </div>
               <div class="row">
-                <p id="locationDetails">{{city.getLocationDetails().substring(city.getLocationDetails().indexOf(',') + 1)}} [{{city.getCordinates()}}]</p>
+                <p id="locationDetails">{{city.getLocationDetails().substring(city.getLocationDetails().indexOf(',') +
+                  1)}} [{{city.getCordinates()}}]</p>
               </div>
             </div>
           </div>
@@ -29,93 +27,42 @@
       </mat-autocomplete>
     </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Enter a date range</mat-label>
-    <mat-date-range-input [formGroup]="selectedDateRange" [min]="today" [max]="maxDate" [rangePicker]="picker">
-      <input matStartDate formControlName="start" placeholder="Start date" matInput (dateChange)="validateForm()">
-      <input matEndDate formControlName="end" placeholder="End date" matInput (dateChange)="validateForm()">
-    </mat-date-range-input>
-    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-date-range-picker #picker (dateChange)="validateForm()"></mat-date-range-picker>
-    <mat-error *ngIf="selectedDateRange.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
-    <mat-error *ngIf="selectedDateRange.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
-    <mat-error *ngIf="!isValidStartDate() || !isValidDateRange()"> Date not valid </mat-error>
-  </mat-form-field>
-  <div class="button-container">
-    <button mat-raised-button (click)="resetForm(); showWeather = false">Reset</button>
-    <button mat-raised-button [disabled]="!isLocationAndDateSelected()" (click)="show(); showWeather = true">Check weather!</button> 
-  </div>
+    <mat-form-field>
+      <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input [formGroup]="selectedDateRange" [min]="today" [max]="maxDate" [rangePicker]="picker">
+        <input matStartDate formControlName="start" placeholder="Start date" matInput (dateChange)="validateForm()">
+        <input matEndDate formControlName="end" placeholder="End date" matInput (dateChange)="validateForm()">
+      </mat-date-range-input>
+      <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker (dateChange)="validateForm()"></mat-date-range-picker>
+      <mat-error *ngIf="selectedDateRange.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+      <mat-error *ngIf="selectedDateRange.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+      <mat-error *ngIf="!isValidStartDate() || !isValidDateRange()"> Date not valid </mat-error>
+    </mat-form-field>
+    <div class="button-container">
+      <button mat-raised-button (click)="resetForm(); showWeather = false">Reset</button>
+      <button mat-raised-button [disabled]="!isLocationAndDateSelected()" (click)="fillAndShowTabelWeather(); showWeather = true">Check
+        weather!</button>
+    </div>
   </form>
 </div>
 
 <div class="table-container" *ngIf="table.length > 0 && showWeather">
-  <div class="left-container" [ngClass]="{'full-width': recordCount <= 7, 'half-width': recordCount > 7 && recordCount <= 14}">
+  <div class="left-container"
+    [ngClass]="{'full-width': recordCount <= 7, 'half-width': recordCount > 7 && recordCount <= 14}">
     <table mat-table [dataSource]="table.slice(0, 7)" class="mat-elevation-z8">
 
-  <ng-container matColumnDef="date">
-    <th mat-header-cell *matHeaderCellDef> Date </th>
-    <td mat-cell *matCellDef="let element"> 
-      <p class="table-p-element">{{element.time}}</p>
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="weatherCode">
-    <th mat-header-cell *matHeaderCellDef>  </th>
-    <td mat-cell *matCellDef="let element">  
-      <p *ngIf="element.weathercode == 0"><i class="bi bi-sun"></i></p>
-      <p *ngIf="element.weathercode >= 1 && element.weathercode <= 3"><i class="bi bi-clouds"></i></p>
-      <p *ngIf="element.weathercode == 45 || element.weathercode == 48"><i class="bi bi-cloud-fog2"></i></p>
-      <p *ngIf="element.weathercode >= 51 && element.weathercode <= 57"><i class="bi bi-cloud-drizzle"></i></p>
-      <p *ngIf="element.weathercode >= 61 && element.weathercode <= 67"><i class="bi bi-cloud-rain-heavy"></i></p>
-      <p *ngIf="element.weathercode >= 71 && element.weathercode <= 77"><i class="bi bi-cloud-snow"></i></p>
-      <p *ngIf="element.weathercode >= 80 && element.weathercode <= 82"><i class="bi bi-cloud-rain"></i></p>
-      <p *ngIf="element.weathercode == 85 || element.weathercode == 86"><i class="bi bi-cloud-sleet"></i></p>
-      <p *ngIf="element.weathercode == 95"><i class="bi bi-cloud-lightning"></i></p>
-      <p *ngIf="element.weathercode == 96 || element.weathercode == 97"><i class="bi bi-cloud-lightning-rain"></i></p>
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="temperature">
-    <th mat-header-cell *matHeaderCellDef> Maks/min. temp. </th>
-    <td mat-cell *matCellDef="let element"> 
-      <p class="table-p-element">
-        {{element.temperature_2m_max}} ° / {{element.temperature_2m_min}} °
-      </p>
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="rainfall">
-    <th mat-header-cell *matHeaderCellDef> Rainfall </th>
-    <td mat-cell *matCellDef="let element"> {{element.rain_sum}} mm </td>
-  </ng-container>
-
-  <ng-container matColumnDef="windspeed">
-    <th mat-header-cell *matHeaderCellDef> Wind speed </th>
-    <td mat-cell *matCellDef="let element"> 
-      <p>
-        {{element.windspeed_10m_max}} m/s
-      </p>
-    </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-</div>
-<div class="right-container" *ngIf="recordCount > 7 && recordCount <= 14">
-  <table mat-table [dataSource]="table.slice(7, 14)" class="mat-elevation-z8" [ngClass]="{'half-width': recordCount > 7 && recordCount <= 14}">
-  
       <ng-container matColumnDef="date">
-        <th mat-header-cell *matHeaderCellDef> Date </th>
-        <td mat-cell *matCellDef="let element"> 
-          <p class="table-p-element">{{element.time}}</p>
+        <th mat-header-cell *matHeaderCellDef><i class="bi bi-calendar"></i> Date </th>
+        <td mat-cell *matCellDef="let element">
+          <p>{{element.time}}</p>
         </td>
       </ng-container>
-    
+
       <ng-container matColumnDef="weatherCode">
-        <th mat-header-cell *matHeaderCellDef>  </th>
-        <td mat-cell *matCellDef="let element"> 
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let element">
           <p *ngIf="element.weathercode == 0"><i class="bi bi-sun"></i></p>
           <p *ngIf="element.weathercode >= 1 && element.weathercode <= 3"><i class="bi bi-clouds"></i></p>
           <p *ngIf="element.weathercode == 45 || element.weathercode == 48"><i class="bi bi-cloud-fog2"></i></p>
@@ -125,35 +72,95 @@
           <p *ngIf="element.weathercode >= 80 && element.weathercode <= 82"><i class="bi bi-cloud-rain"></i></p>
           <p *ngIf="element.weathercode == 85 || element.weathercode == 86"><i class="bi bi-cloud-sleet"></i></p>
           <p *ngIf="element.weathercode == 95"><i class="bi bi-cloud-lightning"></i></p>
-          <p *ngIf="element.weathercode == 96 || element.weathercode == 97"><i class="bi bi-cloud-lightning-rain"></i></p>  
-        </td>
-      </ng-container>
-    
-      <ng-container matColumnDef="temperature">
-        <th mat-header-cell *matHeaderCellDef> Maks/min. temp. </th>
-        <td mat-cell *matCellDef="let element"> 
-          <p class="table-p-element">
-            {{element.temperature_2m_max}} ° / {{element.temperature_2m_min}} °
+          <p *ngIf="element.weathercode == 96 || element.weathercode == 97"><i class="bi bi-cloud-lightning-rain"></i>
           </p>
         </td>
       </ng-container>
-    
-      <ng-container matColumnDef="rainfall">
-        <th mat-header-cell *matHeaderCellDef> Rainfall </th>
-        <td mat-cell *matCellDef="let element"> {{element.rain_sum}} mm </td>
+
+      <ng-container matColumnDef="temperature">
+        <th mat-header-cell *matHeaderCellDef><i class="bi bi-thermometer-sun"></i> Maks/min. temp. </th>
+        <td mat-cell *matCellDef="let element">
+          <p>
+            <span class="text-red">{{element.temperature_2m_max}} °</span>
+            <span> / </span>
+            <span class="text-red">{{element.temperature_2m_min}} °</span>
+          </p>
+        </td>
       </ng-container>
-    
+
+      <ng-container matColumnDef="rainfall">
+        <th mat-header-cell *matHeaderCellDef><i class="bi bi-cloud-rain"></i> Rainfall </th>
+        <td mat-cell *matCellDef="let element" class="text-blue"> {{element.rain_sum}} mm </td>
+      </ng-container>
+
       <ng-container matColumnDef="windspeed">
-        <th mat-header-cell *matHeaderCellDef> Wind speed </th>
-        <td mat-cell *matCellDef="let element"> 
+        <th mat-header-cell *matHeaderCellDef><i class="bi bi-wind"></i> Wind speed </th>
+        <td mat-cell *matCellDef="let element">
           <p>
             {{element.windspeed_10m_max}} m/s
           </p>
         </td>
       </ng-container>
-    
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    </div>
   </div>
+  <div class="right-container" *ngIf="recordCount > 7 && recordCount <= 14">
+    <table mat-table [dataSource]="table.slice(7, 14)" class="mat-elevation-z8"
+      [ngClass]="{'half-width': recordCount > 7 && recordCount <= 14}">
+
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef><i class="bi bi-calendar"></i> Date </th>
+        <td mat-cell *matCellDef="let element">
+          <p>{{element.time}}</p>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="weatherCode">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let element">
+          <p *ngIf="element.weathercode == 0"><i class="bi bi-sun"></i></p>
+          <p *ngIf="element.weathercode >= 1 && element.weathercode <= 3"><i class="bi bi-clouds"></i></p>
+          <p *ngIf="element.weathercode == 45 || element.weathercode == 48"><i class="bi bi-cloud-fog2"></i></p>
+          <p *ngIf="element.weathercode >= 51 && element.weathercode <= 57"><i class="bi bi-cloud-drizzle"></i></p>
+          <p *ngIf="element.weathercode >= 61 && element.weathercode <= 67"><i class="bi bi-cloud-rain-heavy"></i></p>
+          <p *ngIf="element.weathercode >= 71 && element.weathercode <= 77"><i class="bi bi-cloud-snow"></i></p>
+          <p *ngIf="element.weathercode >= 80 && element.weathercode <= 82"><i class="bi bi-cloud-rain"></i></p>
+          <p *ngIf="element.weathercode == 85 || element.weathercode == 86"><i class="bi bi-cloud-sleet"></i></p>
+          <p *ngIf="element.weathercode == 95"><i class="bi bi-cloud-lightning"></i></p>
+          <p *ngIf="element.weathercode == 96 || element.weathercode == 97"><i class="bi bi-cloud-lightning-rain"></i>
+          </p>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="temperature">
+        <th mat-header-cell *matHeaderCellDef><i class="bi bi-thermometer-sun"></i> Max/min temp. </th>
+        <td mat-cell *matCellDef="let element">
+          <p>
+            <span class="text-red">{{element.temperature_2m_max}} °</span>
+            <span> / </span>
+            <span class="text-red">{{element.temperature_2m_min}} °</span>
+          </p>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="rainfall">
+        <th mat-header-cell *matHeaderCellDef><i class="bi bi-cloud-rain"></i> Rainfall </th>
+        <td mat-cell *matCellDef="let element" class="text-blue"> {{element.rain_sum}} mm </td>
+      </ng-container>
+
+      <ng-container matColumnDef="windspeed">
+        <th mat-header-cell *matHeaderCellDef><i class="bi bi-wind"></i> Wind speed </th>
+        <td mat-cell *matCellDef="let element">
+          <p>
+            {{element.windspeed_10m_max}} m/s
+          </p>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>
