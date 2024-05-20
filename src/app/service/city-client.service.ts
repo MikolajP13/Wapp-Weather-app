@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,7 @@ export class CityClientService {
 
   public getCordinatesByCityName(cityName: string): Observable<RootCities> {
     return this.httpClient.get<RootCities>(
-      `https://geocode.maps.co/search?q=${cityName}`
+      `https://geocode.maps.co/search?q=${cityName}&api_key=${environment.geocodeApiKey}`
     );
   }
 }
